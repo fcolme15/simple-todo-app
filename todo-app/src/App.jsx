@@ -2,20 +2,17 @@ import Header from './components/Header'
 import Tabs from './components/Tabs'
 import TodoList from './components/TodoList'
 import TodoInput from './components/TodoInput'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 function App() {
 
-  const [todos, setTodos] = useState([
-    { input : 'First todo', complete: true },
-    { input : '2 todo', complete: false },
-    { input : '3 todo', complete: false },
-    { input : '4 todo', complete: true }
-  ])
+  const [todos, setTodos] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('Open')
 
   function handleNewTodo (newTodo) {
-    setTodos([...todos, {input: newTodo, complete: false}])
+    const newTodoList = [...todos, {input: newTodo, complete: false}]
+    setTodos(newTodoList)
+    saveTodo(newTodoList)
   }
 
   function handleCompleteTodo (index) {
@@ -24,6 +21,7 @@ function App() {
     updatedTask['complete'] = true
     newTodoList[index] = updatedTask
     setTodos(newTodoList)
+    saveTodo(newTodoList)
   }
 
   function handleDeleteTodo (index) {
@@ -31,7 +29,18 @@ function App() {
       return valIndex != index
     })
     setTodos(newTodoList)
+    saveTodo(newTodoList)
   }
+
+  function saveTodo(currTodos) {
+    localStorage.setItem('todo-tasks', JSON.stringify({todos:currTodos}))
+  }
+
+  useEffect (() => {
+    if (!localStorage || !localStorage.getItem('todo-tasks')) {return}
+    let db = JSON.parse(localStorage.getItem('todo-tasks'))
+    setTodos(db.todos)
+  }, [])
 
   return (
     <>
