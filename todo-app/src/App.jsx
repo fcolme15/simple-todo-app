@@ -43,12 +43,16 @@ function App() {
   }, [])
 
   return (
-    <>
+    <div className='min-h-screen bg-gray-900 flex flex-col'>
       <Header todoList={todos}/>
-      <Tabs todoList={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <TodoList todoList={todos} selectedTab={selectedTab} handleDeleteTodo={handleDeleteTodo} handleCompleteTodo={handleCompleteTodo}/>
-      <TodoInput handleNewTodo={handleNewTodo}/>
-    </>
+      <div className='flex flex-1 flex-col lg:flex-row'>
+        <Tabs todoList={todos} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        <div className='flex-1 flex flex-col'>
+          <TodoList todoList={todos} selectedTab={selectedTab} handleDeleteTodo={handleDeleteTodo} handleCompleteTodo={handleCompleteTodo}/>
+          <TodoInput handleNewTodo={handleNewTodo}/>
+        </div>
+      </div>
+    </div>
   )
 }
 
